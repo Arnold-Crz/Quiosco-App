@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Para hacer opcional un campo dentro de un modelo lo hacemos con ? Example apellido? String
+
+// Relacionando Modelos
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Float
+  img         String
+  categoria   Category @relation(fields: [idCategoria], references: [id])
+  idCategoria Int
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  icon      String
+  productos Product[]
+}
+
+model Orden {
+  id     Int    @id @default(autoincrement())
+  name   String
+  fecha  String
+  total  Float
+  pedido Json
+}
